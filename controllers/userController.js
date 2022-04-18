@@ -1,4 +1,3 @@
-
 const User = require('../models/User');
 const bcrypt = require('bcrypt'); /*Password encryption*/
 const auth = require('../auth');
@@ -29,7 +28,7 @@ module.exports.registerUser = (reqBody) => {
 			})
 
 		} else {
-			return {message: "User already exists."}	
+			return {message: 'User already exists.'}	
 		}
 	})
 };

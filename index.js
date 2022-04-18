@@ -6,7 +6,7 @@ const cors = require('cors');
 
 // Routes
 const userRoutes = require('./routes/userRoutes');
-// const courseRoutes = require('./routes/courseRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 // Server
 const app = express();
@@ -17,9 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // http://localhost:3000/api/users
-app.use("/api/users", userRoutes);
+app.use('/api/users', userRoutes);
 // http://localhost:3000/api/products
-// app.use('/api/products', productsRoutes);
+app.use('/api/products', productRoutes);
 
 
 

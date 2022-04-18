@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const auth = require('../auth');
@@ -22,7 +21,7 @@ router.get('/', (req, res) => {
 	if(data.isAdmin) {
 		UserController.getAllUser(req.body).then(result => res.send(result))
 	} else {
-		res.send("Invalid token.")
+		res.send('Invalid token.')
 	}
 });
 
@@ -37,7 +36,7 @@ router.get('/admin', (req, res) => {
 	if(data.isAdmin) {	
 		UserController.getAdmin(req.body).then(result => res.send(result))
 	} else {
-		res.send("Invalid token.")
+		res.send('Invalid token.')
 	}
 });
 
@@ -58,7 +57,7 @@ router.put('/set-admin/:id', auth.verify, (req, res) => {
 	if(data.isAdmin){
 		UserController.setAdmin(req.params.id).then(result => res.send(result));
 	} else {
-		res.send("Invalid token.")
+		res.send('Invalid token.')
 	}
 });
 
@@ -73,7 +72,7 @@ router.put('/set-user/:id', auth.verify, (req, res) => {
 	if(data.isAdmin){
 		UserController.setUser(req.params.id).then(result => res.send(result));
 	} else {
-		res.send("Invalid token.")
+		res.send('Invalid token.')
 	}	
 });
 
