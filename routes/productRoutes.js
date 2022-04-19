@@ -51,7 +51,7 @@ router.put('/archive/:id', auth.verify, (req, res) => {
 	}
 
 	if(data.isAdmin){
-		ProductController.archiveProduct(req.params.id, req.body).then(result => res.send(result));
+		ProductController.archiveProduct(req.params.id).then(result => res.send(result));
 	} else {
 		res.send('Invalid token.')
 	}
@@ -64,7 +64,7 @@ router.put('/activate/:id', auth.verify, (req, res) => {
 	}
 
 	if(data.isAdmin){
-		ProductController.activateProduct(req.params.id, req.body).then(result => res.send(result));
+		ProductController.activateProduct(req.params.id).then(result => res.send(result));
 	} else {
 		res.send('Invalid token.')
 	}

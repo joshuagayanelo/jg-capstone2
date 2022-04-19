@@ -40,16 +40,14 @@ module.exports.loginUser = (reqBody) => {
 
 	return User.findOne({email: reqBody.email}).then(result => {
 		if(result == null) {
-			return false;
+			return {message:'Incorrect email or password'};
 		} else {
 			const validatePassword = bcrypt.compareSync(reqBody.password, result.password)
 
 			if(validatePassword) {
-				// Generate access token
 				return { token : auth.createAccessToken(result.toObject()) }
 			} else {
-				// Password does not match
-				return false;
+				return {message:'Incorrect email or password'};
 			}
 		}
 	})
@@ -59,13 +57,40 @@ module.exports.loginUser = (reqBody) => {
 // GET ALL USERS
 module.exports.getAllUser = (reqBody) => {
 	
-	return User.find({ isAdmin: false }).then((result, err) => {
+	return User.find({ isAdmin: false}).then((result, err) => {
 
 		if(err) {
 			return false;
 		} else {
-
 			return result;
+		}
+	})
+};
+
+
+// GET ALL ADMIN
+module.exports.getAdmin = (reqBody) => {
+	
+	return User.find({ isAdmin: true }).then((result, err) => {
+		if(err) {
+			return false;
+		} else {
+			return result
+		}
+	})
+};
+
+// RETRIEVE ORDERS
+module.exports.getOrders = (reqBody) => {
+	
+	return User.find({ isAdmin: false, hasOrdered: true }).then((result, err) => {
+
+		if(err) {
+			return false;
+		} else {
+			return {
+				orders: result
+			}
 		}
 	})
 };
@@ -81,18 +106,6 @@ module.exports.getOneUser = (reqParams) => {
 		}
 	})
 }
-
-// GET ALL ADMIN
-module.exports.getAdmin = (reqBody) => {
-	
-	return User.find({ isAdmin: true }).then((result, err) => {
-		if(err) {
-			return false;
-		} else {
-			return result
-		}
-	})
-};
 
 
 // ASSIGN USER AS ADMIN
@@ -129,13 +142,17 @@ module.exports.setUser = (id, res) => {
 };
 
 
-// CREATE ORDER
+// CREATE ORDER TRIAL AND ERROR
 module.exports.checkout = async (data) => {
 
 	let isUserUpdated = await User.findById(data.userId).then(user => {
-		
-		user.orderedProducts.push({ productId: data.productId });
+	
 		user.hasOrdered = true;
+
+		user.orderedProducts.push({
+			productId: data.productId,
+			qty:data.qty
+		});
 
 		return user.save().then((user, err) => {
 			if(err) {
@@ -148,7 +165,12 @@ module.exports.checkout = async (data) => {
 
 	let isProductUpdated = await Product.findById(data.productId).then(product => {
 		
-		product.customers.push({ userId: data.userId });
+		product.quantity -= data.qty;
+
+		product.customers.push({
+			userId: data.userId,
+			qtyOrdered:data.qty
+		});
 
 		return product.save().then((product, err) => {
 			if(err) {
@@ -167,6 +189,13 @@ module.exports.checkout = async (data) => {
 
 };
 
-
-
-
+// GET USER ORDER
+module.exports.myOrders = (reqParams) => {
+	return User.findById(reqParams).then((result, err) => {
+		if(err) {
+			return false;
+		} else {
+			return {orders:result};
+		}
+	})
+}

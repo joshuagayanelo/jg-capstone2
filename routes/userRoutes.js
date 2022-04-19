@@ -26,6 +26,37 @@ router.get('/', (req, res) => {
 });
 
 
+// GET ALL ADMIN
+router.get('/admin', (req, res) => {
+	
+	const data = {
+		isAdmin: auth.decode(req.headers.authorization).isAdmin
+	}
+
+	if(data.isAdmin) {	
+		UserController.getAdmin(req.body).then(result => res.send(result))
+	} else {
+		res.send('Invalid token.')
+	}
+});
+
+
+// RETRIEVE ORDERS
+router.get('/orders', (req, res) => {
+
+	const data = {
+		isAdmin: auth.decode(req.headers.authorization).isAdmin
+	}
+
+	if(data.isAdmin) {
+		UserController.getOrders(req.body).then(result => res.send(result))
+	} else {
+		res.send('Invalid token.')
+	}
+});
+
+
+
 //GET USER BY ID
 router.get('/:id', (req, res) => {
 	
@@ -42,21 +73,6 @@ router.get('/:id', (req, res) => {
 });
 
 
-// GET ALL ADMIN
-router.get('/admin', (req, res) => {
-	
-	const data = {
-		isAdmin: auth.decode(req.headers.authorization).isAdmin
-	}
-
-	if(data.isAdmin) {	
-		UserController.getAdmin(req.body).then(result => res.send(result))
-	} else {
-		res.send('Invalid token.')
-	}
-});
-
-
 // LOGIN USER
 router.post('/login', (req ,res) => {
 	UserController.loginUser(req.body).then(result => res.send(result))
@@ -70,7 +86,7 @@ router.put('/set-admin/:id', auth.verify, (req, res) => {
 		isAdmin: auth.decode(req.headers.authorization).isAdmin
 	}
 
-	if(data.isAdmin){
+	if(data.isAdmin) {
 		UserController.setAdmin(req.params.id).then(result => res.send(result));
 	} else {
 		res.send('Invalid token.')
@@ -85,7 +101,7 @@ router.put('/set-user/:id', auth.verify, (req, res) => {
 		isAdmin: auth.decode(req.headers.authorization).isAdmin
 	}
 
-	if(data.isAdmin){
+	if(data.isAdmin) {
 		UserController.setUser(req.params.id).then(result => res.send(result));
 	} else {
 		res.send('Invalid token.')
@@ -95,24 +111,28 @@ router.put('/set-user/:id', auth.verify, (req, res) => {
 
 // CREATE ORDER
 router.post('/checkout', auth.verify, (req,res) => {
+	
 	let data = {
 		userId: auth.decode(req.headers.authorization).id,
 		productId: req.body.productId,
-		quantity: req.body.quantity
+		qty: req.body.qty
+
 	}
 
 	UserController.checkout(data).then(result => res.send(result));
 });
 
-// RETRIEVE ORDERS
+module.exports = router;
 
+
+// GET USER ORDER
+router.get('/my-orders/:id', auth.verify, (req,res) => {
+	
+	let data = {
+		userId: auth.decode(req.headers.authorization).id
+	}
+
+	UserController.myOrders(req.params.id).then(result => res.send(result));
+});
 
 module.exports = router;
- 
-
-
-
-
-
-
-

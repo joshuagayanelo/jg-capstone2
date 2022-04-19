@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const secret = 'CourseBookingAPI';
+const secret = 'Capstone2api';
 
 // JSON Web Token or JWT is a way of securely passing information from the server to the front end or to other parts of server.
 //  Information is kept secure through the user of secret code.
@@ -23,7 +23,7 @@ module.exports.createAccessToken = (user) => {
 	};
 
 	// Generate a JSON web token using the jwt's method (sign())
-	return jwt.sign(data, secret, {expiresIn: '12h'})
+	return jwt.sign(data, secret, {expiresIn: '7d'})
 }
 
 // Token Verificaiton

@@ -26,24 +26,28 @@ const userSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false
 		},
+		hasOrdered: {
+			type: Boolean,
+			default:false
+		},
 		orderedProducts: [
 			{
 				productId: {
 					type: String,
 					required: [true, 'Product ID is required.']
 				},
+				qty: {
+					type: Number,
+					required: [true, 'Order quantity is required.']
+				},
 				purchasedOn: {
 					type: Date,
 					default: new Date()
-				}
+				},
 
 			}
 
-		], 
-		hasOrdered: {
-			type: Boolean,
-			default:false
-		}
+		]
 
 	})
 

@@ -84,17 +84,16 @@ module.exports.getOneProduct = (reqParams) => {
 
 
 // ARCHIVE PRODUCT
-module.exports.archiveProduct = (id, reqBody) => {
+module.exports.archiveProduct = (id, res) => {
  
  	let archivedProduct = {
  		isActive: false
 	};
 
 	return Product.findByIdAndUpdate(id, archivedProduct).then((result,err) => {
-		if(err) {	
+		if(err) {
 			return false;
 		} else {
-			// Course updated successfullu
 			return {message: 'Product has been succesfully archived.'};
 		}
 	})
@@ -102,7 +101,7 @@ module.exports.archiveProduct = (id, reqBody) => {
 
 
 // ACTIVATE PRODUCT
-module.exports.activateProduct = (id, reqBody) => {
+module.exports.activateProduct = (id, res) => {
  
  	let activatedProduct = {
  		isActive: true
@@ -112,7 +111,6 @@ module.exports.activateProduct = (id, reqBody) => {
 		if(err) {	
 			return false;
 		} else {
-			// Course updated successfullu
 			return {message: 'Product is now active.'};
 		}
 	})
