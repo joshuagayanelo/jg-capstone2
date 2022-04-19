@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Product = require('../models/Product')
 const bcrypt = require('bcrypt'); /*Password encryption*/
 const auth = require('../auth');
 
@@ -70,6 +71,17 @@ module.exports.getAllUser = (reqBody) => {
 };
 
 
+// GET USER BY ID
+module.exports.getOneUser = (reqParams) => {
+	return User.findById(reqParams).then((result, err) => {
+		if(err) {
+			return false;
+		} else {
+			return result;
+		}
+	})
+}
+
 // GET ALL ADMIN
 module.exports.getAdmin = (reqBody) => {
 	
@@ -117,6 +129,43 @@ module.exports.setUser = (id, res) => {
 };
 
 
+// CREATE ORDER
+module.exports.checkout = async (data) => {
+
+	let isUserUpdated = await User.findById(data.userId).then(user => {
+		
+		user.orderedProducts.push({ productId: data.productId });
+		user.hasOrdered = true;
+
+		return user.save().then((user, err) => {
+			if(err) {
+				return false;
+			} else {
+				return true;
+			}
+		})
+	});
+
+	let isProductUpdated = await Product.findById(data.productId).then(product => {
+		
+		product.customers.push({ userId: data.userId });
+
+		return product.save().then((product, err) => {
+			if(err) {
+				return false;
+			} else {
+				return true;
+			}
+		})
+	})
+
+	if(isUserUpdated && isProductUpdated) {
+		return {message: 'Your product has been added.'};
+	} else {
+		return false;
+	}
+
+};
 
 
 

@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
 			{
 				productId: {
 					type: String,
-					required: [true, 'Course ID is required.']
+					required: [true, 'Product ID is required.']
 				},
 				purchasedOn: {
 					type: Date,
@@ -39,7 +39,11 @@ const userSchema = new mongoose.Schema({
 
 			}
 
-		]
+		], 
+		hasOrdered: {
+			type: Boolean,
+			default:false
+		}
 
 	})
 

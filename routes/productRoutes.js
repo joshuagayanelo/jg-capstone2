@@ -38,7 +38,7 @@ router.get('/', (req, res) => {
 });
 
 
-// GET A SPECIFIC PRODUCT
+// GET PRODUCT BY ID
 router.get('/:id', (req, res) => {
 	ProductController.getOneProduct(req.params.id).then(result => res.send(result))
 });

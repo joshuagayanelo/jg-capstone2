@@ -71,7 +71,7 @@ module.exports.getAllProducts = (reqBody) => {
 	})
 }
 
-// GET A SPECIFIC PRODUCTS
+// GET PRODUCT BY ID
 module.exports.getOneProduct = (reqParams) => {
 	return Product.findById(reqParams).then((result, err) => {
 		if(result.isActive === true) {

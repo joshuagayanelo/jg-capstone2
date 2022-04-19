@@ -23,7 +23,7 @@ module.exports.createAccessToken = (user) => {
 	};
 
 	// Generate a JSON web token using the jwt's method (sign())
-	return jwt.sign(data, secret, {expiresIn: '1h'})
+	return jwt.sign(data, secret, {expiresIn: '12h'})
 }
 
 // Token Verificaiton

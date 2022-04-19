@@ -26,6 +26,22 @@ router.get('/', (req, res) => {
 });
 
 
+//GET USER BY ID
+router.get('/:id', (req, res) => {
+	
+	const data = {
+		isAdmin: auth.decode(req.headers.authorization).isAdmin
+	}
+
+	if(data.isAdmin){
+		UserController.getOneUser(req.params.id).then(result => res.send(result))
+	} else {
+		res.send('Invalid token.')
+	}
+
+});
+
+
 // GET ALL ADMIN
 router.get('/admin', (req, res) => {
 	
@@ -76,8 +92,23 @@ router.put('/set-user/:id', auth.verify, (req, res) => {
 	}	
 });
 
-module.exports = router;
 
+// CREATE ORDER
+router.post('/checkout', auth.verify, (req,res) => {
+	let data = {
+		userId: auth.decode(req.headers.authorization).id,
+		productId: req.body.productId,
+		quantity: req.body.quantity
+	}
+
+	UserController.checkout(data).then(result => res.send(result));
+});
+
+// RETRIEVE ORDERS
+
+
+module.exports = router;
+ 
 
 
 
