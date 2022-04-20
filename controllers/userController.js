@@ -142,7 +142,7 @@ module.exports.setUser = (id, res) => {
 };
 
 
-// CREATE ORDER TRIAL AND ERROR
+// CREATE ORDER
 module.exports.checkout = async (data) => {
 
 	let isUserUpdated = await User.findById(data.userId).then(user => {
