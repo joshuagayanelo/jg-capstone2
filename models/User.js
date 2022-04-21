@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
 			type: Boolean,
 			default:false
 		},
+/*		totalPurchase: {
+			type: Number,
+			required: [true, 'Total purchase is required.']
+		},*/
 		orderedProducts: [
 			{
 				productId: {

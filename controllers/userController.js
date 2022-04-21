@@ -58,11 +58,10 @@ module.exports.loginUser = (reqBody) => {
 module.exports.getAllUser = (reqBody) => {
 	
 	return User.find({ isAdmin: false}).then((result, err) => {
-
 		if(err) {
 			return false;
 		} else {
-			return result;
+			return result
 		}
 	})
 };
@@ -102,7 +101,7 @@ module.exports.getOneUser = (reqParams) => {
 		if(err) {
 			return false;
 		} else {
-			return result;
+			return result
 		}
 	})
 }

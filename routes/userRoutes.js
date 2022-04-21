@@ -56,7 +56,6 @@ router.get('/orders', (req, res) => {
 });
 
 
-
 //GET USER BY ID
 router.get('/:id', (req, res) => {
 	
@@ -116,7 +115,6 @@ router.post('/checkout', auth.verify, (req,res) => {
 		userId: auth.decode(req.headers.authorization).id,
 		productId: req.body.productId,
 		qty: req.body.qty
-
 	}
 
 	UserController.checkout(data).then(result => res.send(result));
