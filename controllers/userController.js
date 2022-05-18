@@ -183,17 +183,15 @@ module.exports.addToCart = async (data) => {
 				return true;
 			}
 		})
-	})
+	});
 
-	if(isUserUpdated && isProductUpdated) {
-		return 
-			{message: 'Your product has been added.'}
-	
-	} else {
-		return false;
-	}
+		if(isUserUpdated && isProductUpdated){
+			return {message:'You product has been added.'}
+		} else {
+			return false;
+		}
+	};
 
-};
 
 //GET USER CART
 module.exports.myCart = (reqParams) => {
