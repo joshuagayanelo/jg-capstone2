@@ -141,16 +141,17 @@ module.exports.setUser = (id, res) => {
 };
 
 
-// CREATE ORDER
-module.exports.checkout = async (data) => {
+// ADD TO CART
+module.exports.addToCart = async (data) => {
 
 	let isUserUpdated = await User.findById(data.userId).then(user => {
 	
-		user.hasOrdered = true;
+		user.hadAddedToCart = true;
 
-		user.orderedProducts.push({
+		user.addedToCart.push({
 			productId: data.productId,
-			qty:data.qty
+			qty:data.qty,
+			price: data.price * data.qty
 		});
 
 		return user.save().then((user, err) => {
@@ -166,9 +167,13 @@ module.exports.checkout = async (data) => {
 		
 		product.quantity -= data.qty;
 
+		//let subTotal = data.qty * data.price
+
+
 		product.customers.push({
 			userId: data.userId,
-			qtyOrdered:data.qty
+			qtyOrdered: data.qty,
+			price: data.price 
 		});
 
 		return product.save().then((product, err) => {
@@ -181,20 +186,29 @@ module.exports.checkout = async (data) => {
 	})
 
 	if(isUserUpdated && isProductUpdated) {
-		return {message: 'Your product has been added.'};
+		return 
+			{message: 'Your product has been added.'}
+	
 	} else {
 		return false;
 	}
 
 };
 
-// GET USER ORDER
-module.exports.myOrders = (reqParams) => {
+//GET USER CART
+module.exports.myCart = (reqParams) => {
 	return User.findById(reqParams).then((result, err) => {
 		if(err) {
 			return false;
 		} else {
-			return {orders:result};
+			return [
+				{
+					orders:"Your orders",
+					result
+				}
+			]
 		}
 	})
 }
+
+

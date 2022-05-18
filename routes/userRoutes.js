@@ -41,7 +41,7 @@ router.get('/admin', (req, res) => {
 });
 
 
-// RETRIEVE ORDERS
+// RETRIEVE ALL ORDERS
 router.get('/orders', (req, res) => {
 
 	const data = {
@@ -53,6 +53,14 @@ router.get('/orders', (req, res) => {
 	} else {
 		res.send('Invalid token.')
 	}
+});
+
+// GET USER CART
+router.get('/my-cart', auth.verify, (req,res) => {
+	
+	const data = auth.decode(req.headers.authorization);
+
+	UserController.myCart(data.id).then(result => res.send(result));
 });
 
 
@@ -108,29 +116,18 @@ router.put('/set-user/:id', auth.verify, (req, res) => {
 });
 
 
-// CREATE ORDER
-router.post('/checkout', auth.verify, (req,res) => {
+// ADD TO CART
+router.post('/add-to-cart', auth.verify, (req,res) => {
 	
-	let data = {
+	const data = {
 		userId: auth.decode(req.headers.authorization).id,
 		productId: req.body.productId,
-		qty: req.body.qty
+		qty: req.body.qty,
+		price: req.body.price
+
 	}
 
-	UserController.checkout(data).then(result => res.send(result));
-});
-
-module.exports = router;
-
-
-// GET USER ORDER
-router.get('/my-orders/:id', auth.verify, (req,res) => {
-	
-	let data = {
-		userId: auth.decode(req.headers.authorization).id
-	}
-
-	UserController.myOrders(req.params.id).then(result => res.send(result));
+	UserController.addToCart(data).then(result => res.send(result));
 });
 
 module.exports = router;

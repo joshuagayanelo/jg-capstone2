@@ -26,15 +26,11 @@ const userSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false
 		},
-		hasOrdered: {
+		hasAddedToCart: {
 			type: Boolean,
 			default:false
 		},
-/*		totalPurchase: {
-			type: Number,
-			required: [true, 'Total purchase is required.']
-		},*/
-		orderedProducts: [
+		addedToCart: [
 			{
 				productId: {
 					type: String,
@@ -44,10 +40,14 @@ const userSchema = new mongoose.Schema({
 					type: Number,
 					required: [true, 'Order quantity is required.']
 				},
+				price: {
+					type: Number,
+					required: [true, 'Price is required.']
+				},
 				purchasedOn: {
 					type: Date,
 					default: new Date()
-				},
+				}
 
 			}
 
