@@ -40,6 +40,13 @@ router.get('/admin', (req, res) => {
 	}
 });
 
+// GET USER ORDER
+router.get('/my-orders', auth.verify, (req,res) => {
+	
+	const data = auth.decode(req.headers.authorization);
+
+	UserController.myOrders(data.id).then(result => res.send(result));
+});
 
 // RETRIEVE ALL ORDERS
 router.get('/orders', (req, res) => {
@@ -55,13 +62,6 @@ router.get('/orders', (req, res) => {
 	}
 });
 
-// GET USER CART
-router.get('/my-cart', auth.verify, (req,res) => {
-	
-	const data = auth.decode(req.headers.authorization);
-
-	UserController.myCart(data.id).then(result => res.send(result));
-});
 
 
 //GET USER BY ID
@@ -116,8 +116,8 @@ router.put('/set-user/:id', auth.verify, (req, res) => {
 });
 
 
-// ADD TO CART
-router.post('/add-to-cart', auth.verify, (req,res) => {
+// CHECKOUT
+router.post('/checkout', auth.verify, (req,res) => {
 	
 	const data = {
 		userId: auth.decode(req.headers.authorization).id,
@@ -127,7 +127,7 @@ router.post('/add-to-cart', auth.verify, (req,res) => {
 
 	}
 
-	UserController.addToCart(data).then(result => res.send(result));
+	UserController.checkOut(data).then(result => res.send(result));
 });
 
 module.exports = router;

@@ -140,15 +140,31 @@ module.exports.setUser = (id, res) => {
 	})
 };
 
+//GET USER ORDER
+module.exports.myOrders = (reqParams) => {
+	return User.findById(reqParams).then((result, err) => {
+		if(err) {
+			return false;
+		} else {
+			return [
+				{
+					orders:"Your orders",
+					result
+				}
+			]
+		}
+	})
+}
 
-// ADD TO CART
-module.exports.addToCart = async (data) => {
+
+// CHECKOUT
+module.exports.checkOut = async (data) => {
 
 	let isUserUpdated = await User.findById(data.userId).then(user => {
 	
-		user.hadAddedToCart = true;
+		user.hasPurchased = true;
 
-		user.addedToCart.push({
+		user.orders.push({
 			productId: data.productId,
 			qty:data.qty,
 			price: data.price * data.qty
@@ -193,20 +209,6 @@ module.exports.addToCart = async (data) => {
 	};
 
 
-//GET USER CART
-module.exports.myCart = (reqParams) => {
-	return User.findById(reqParams).then((result, err) => {
-		if(err) {
-			return false;
-		} else {
-			return [
-				{
-					orders:"Your orders",
-					result
-				}
-			]
-		}
-	})
-}
+
 
 

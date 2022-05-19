@@ -26,11 +26,11 @@ const userSchema = new mongoose.Schema({
 			type: Boolean,
 			default: false
 		},
-		hasAddedToCart: {
+		hasPurchased: {
 			type: Boolean,
 			default:false
 		},
-		addedToCart: [
+		orders: [
 			{
 				productId: {
 					type: String,
