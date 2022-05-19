@@ -1,48 +1,40 @@
-// const mongoose = rqeuire('mongoose');
+const mongoose = require('mongoose');
 
-// const cartSchema = new mongoose.Schema({
+const cartSchema = new mongoose.Schema({
 
-// 	userId:{
-// 		type: String,
-// 		required: [true, 'User ID is required.']
-// 	}
-// 	subTotal: {
-// 		type: Number,
-// 		required: [true, 'Subtotal is required.']
-// 	}, 
-// 	Total: {
-// 		type: Number,
-// 		required: [true, 'Total is required.']
-// 	},
-// 	addedToCartOn:{
-// 		type: Date,
-// 		required: new Date()
-// 	},
-// 	hasAddedToCart: {
-// 		type: Boolean,
-// 		default: false
-// 	},
-// 	cartItems: [
-// 		{
-// 			productId: {
-// 				type: String,
-// 				required: [true, 'Product ID is required.']
-// 			},
-// 			qty: {
-// 				type: Number,
-// 				required: [true, 'Order quantity is required.']
-// 			},
-// 			price: {
-// 				type: Number,
-// 				required: [true, 'Price is required.']
-// 			},
-// 			addtoCartOn: {
-// 				type: Date,
-// 				default: new Date()
-// 			}
-// 		}
-// 	]
+	user:{
+		type: String,
+		required: [true, 'User ID is required.']
+	},
+	productId: {
+		type: String,
+		required: [true, 'Product ID is required.']
+	},
+	qty: {
+		type: Number,
+		required: [true, 'Order quantity is required.']
+	},
+	price: {
+		type: Number,
+		required: [true, 'Price is required.']
+	},
+	subTotal: {
+		type: Number,
+		required: [true, 'Subtotal is required.']
+	},
+	isPaid:{
+		type: Boolean,
+		default: false
+	},
+	addedtoCartOn: {
+		type: Date,
+		default: new Date()
+	},
+	isArchived:{
+		type: Boolean,
+		default:false
+	}	
 
-// })
+})
 
-// module.exports = mongoose.model('Cart', cartSchema)
+module.exports = mongoose.model('Cart', cartSchema)

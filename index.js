@@ -7,7 +7,7 @@ const cors = require('cors');
 // Routes
 const userRoutes = require('./routes/userRoutes');
 const productRoutes = require('./routes/productRoutes');
-// const cartRoutes = require('./routes/cartRoutes');
+const cartRoutes = require('./routes/cartRoutes');
 
 // Server
 const app = express();
@@ -22,7 +22,7 @@ app.use('/api/users', userRoutes);
 // http://localhost:3000/api/products
 app.use('/api/products', productRoutes);
 // http://localhost:3000/api/cart
-// app.use('./api/products', cartRoutes);
+app.use('/api/cart', cartRoutes);
 
 
 

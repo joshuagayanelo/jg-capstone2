@@ -1,71 +1,67 @@
-// const User = require ('../models/Cart');
-// const Product = require('../models/Product')
-// const auth = require('../auth');
-
-// // ADD TO CART
-// module.exports.addToCart = async (data) => {
-
-// 	let isUserUpdated = await User.findById(data.userId).then(user => {
-	
-// 		user.hadAddedToCart = true;
-
-// 		user.addedToCart.push({
-// 			productId: data.productId,
-// 			qty:data.qty,
-// 			price: data.price * data.qty
-// 		});
-
-// 		return user.save().then((user, err) => {
-// 			if(err) {
-// 				return false;
-// 			} else {
-// 				return true;
-// 			}
-// 		})
-// 	});
-
-// 	let isProductUpdated = await Product.findById(data.productId).then(product => {
-		
-// 		product.quantity -= data.qty;
-
-// 		//let subTotal = data.qty * data.price
+const User = require('../models/User');
+const Cart = require ('../models/Cart');
+const Product = require('../models/Product')
+const bcrypt = require('bcrypt'); /*Password encryption*/
+const auth = require('../auth');
 
 
-// 		product.customers.push({
-// 			userId: data.userId,
-// 			qtyOrdered: data.qty,
-// 			price: data.price 
-// 		});
 
-// 		return product.save().then((product, err) => {
-// 			if(err) {
-// 				return false;
-// 			} else {
-// 				return true;
-// 			}
-// 		})
-// 	});
+// ADD TO CART
+module.exports.addToCart = (data) => {
 
-// 		if(isUserUpdated && isProductUpdated){
-// 			return {message:'You product has been added.'}
-// 		} else {
-// 			return false;
-// 		}
-// 	};
+	//return Cart.findById(data.user).then(result => {
 
+		let newCart = new Cart ({
+			user: data.user,
+			productId: data.productId,
+			qty:data.qty,
+			price: data.price,
+			subTotal: data.price * data.qty
+		})	
+		//return fals	
+		return newCart.save().then((cart,err) => {
+				if(err){
+				return false;
+			} else {
+				return true;
+			}
+		})
 
-// //GET USER CART
-// module.exports.myCart = (reqParams) => {
-// 	return User.findById(reqParams).then((result, err) => {
-// 		if(err) {
-// 			return false;
-// 		} else {
-// 			return [
-// 				{
-// 					orders:"Your orders",
-// 					result
-// 				}
-// 			]
-// 		}
-// 	})
-// }
+	//})
+
+}
+
+//RETRIEVE USER CART
+module.exports.myCart = (data) => {
+return Cart.find({user:data.user}).then((result, err) => {
+		if(err) {
+			return false;
+		} else {
+			return [
+				{
+					orders:"Your cart",
+					result
+				}
+			]
+		}
+	})
+}
+
+// REMOVE ITEM
+module.exports.removeItem = (cartId, res) => {
+	let newStatus = {
+		isArchived: true
+	}
+	// findByIdAndUpdate(id), updatesToBeApplied
+	return Cart.findByIdAndUpdate(cartId, newStatus).then((result,err) => {
+		if(err) {	
+			return false;
+		} else {
+			// Course updated successfullu
+			return {
+				message: "Course successfully archived."
+			};
+		}
+	})
+};
+
