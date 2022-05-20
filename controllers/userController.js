@@ -168,7 +168,7 @@ module.exports.checkOut = async (data) => {
 		data.orders.forEach(element => {
 			user.orders.push({
 				
-				cartId: element.cartId,
+				cartId: element.cartId
 				
 			});
 		});
@@ -185,11 +185,11 @@ module.exports.checkOut = async (data) => {
 	});
 		
 	// DITO AKO NA STUCK---------------------------------
-	let isCartUpdated = await Cart.findById(data.orders.cartId).then(product => {
+	let isCartUpdated = await Cart.findById(data.orders.cartId).then(result => {
 
 		cart.isPaid = true
 
-		return cart.save().then((product, err) => {
+		return cart.save().then((cart, err) => {
 			if(err) {
 				return false;
 			} else {
