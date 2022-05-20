@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Cart = require ('../models/Cart');
 const Product = require('../models/Product')
 const bcrypt = require('bcrypt'); /*Password encryption*/
 const auth = require('../auth');
@@ -82,7 +83,7 @@ module.exports.getAdmin = (reqBody) => {
 // RETRIEVE ORDERS
 module.exports.getOrders = (reqBody) => {
 	
-	return User.find({ isAdmin: false, hasOrdered: true }).then((result, err) => {
+	return User.find({ isAdmin: false, hasPurchased: true }).then((result, err) => {
 
 		if(err) {
 			return false;
@@ -157,17 +158,19 @@ module.exports.myOrders = (reqParams) => {
 }
 
 
-// CHECKOUT
+// CHECKOUT v2
 module.exports.checkOut = async (data) => {
 
 	let isUserUpdated = await User.findById(data.userId).then(user => {
 	
-		user.hasPurchased = true;
+		user.hasPurchased = true
 
-		user.orders.push({
-			productId: data.productId,
-			qty:data.qty,
-			price: data.price * data.qty
+		data.orders.forEach(element => {
+			user.orders.push({
+				
+				cartId: element.cartId,
+				
+			});
 		});
 
 		return user.save().then((user, err) => {
@@ -177,38 +180,84 @@ module.exports.checkOut = async (data) => {
 				return true;
 			}
 		})
+
+
 	});
-
-	let isProductUpdated = await Product.findById(data.productId).then(product => {
 		
-		product.quantity -= data.qty;
+	// DITO AKO NA STUCK---------------------------------
+	let isCartUpdated = await Cart.findById(data.orders.cartId).then(product => {
 
-		//let subTotal = data.qty * data.price
+		cart.isPaid = true
 
-
-		product.customers.push({
-			userId: data.userId,
-			qtyOrdered: data.qty,
-			price: data.price 
-		});
-
-		return product.save().then((product, err) => {
+		return cart.save().then((product, err) => {
 			if(err) {
 				return false;
 			} else {
 				return true;
 			}
 		})
-	});
 
-		if(isUserUpdated && isProductUpdated){
-			return {message:'You product has been added.'}
-		} else {
-			return false;
-		}
-	};
+	})
+	//-----------------------------------------------------
+
+	if(isUserUpdated && isCartUpdated){
+		return {message:'Purchase Successful.'}
+	} else {
+		return false;
+	}
+};
 
 
 
+	// // CHECKOUT v1
+	// module.exports.checkOut = async (data) => {
+
+	// 	let isUserUpdated = await User.findById(data.userId).then(user => {
+		
+	// 		user.hasPurchased = true;
+
+	// 		user.orders.push({
+	// 			productId: data.productId,
+	// 			qty:data.qty,
+	// 			price: data.price * data.qty
+	// 		});
+
+	// 		return user.save().then((user, err) => {
+	// 			if(err) {
+	// 				return false;
+	// 			} else {
+	// 				return true;
+	// 			}
+	// 		})
+	// 	});
+
+	// 	let isProductUpdated = await Product.findById(data.productId).then(product => {
+			
+	// 		product.quantity -= data.qty;
+
+	// 		//let subTotal = data.qty * data.price
 
 
+	// 		product.customers.push({
+	// 			userId: data.userId,
+	// 			qtyOrdered: data.qty,
+	// 			price: data.price 
+	// 		});
+
+	// 		return product.save().then((product, err) => {
+	// 			if(err) {
+	// 				return false;
+	// 			} else {
+	// 				return true;
+	// 			}
+	// 		})
+
+
+	// 	});
+
+	// 		if(isUserUpdated && isProductUpdated){
+	// 			return {message:'You product has been added.'}
+	// 		} else {
+	// 			return false;
+	// 		}
+	// };

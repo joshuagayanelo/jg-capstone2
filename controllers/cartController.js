@@ -7,9 +7,9 @@ const auth = require('../auth');
 
 
 // ADD TO CART
-module.exports.addToCart = (data) => {
+module.exports.addToCart = async (data) => {
 
-	//return Cart.findById(data.user).then(result => {
+	let isCartUpdated = await Cart.findById(data.user).then(result => {
 
 		let newCart = new Cart ({
 			user: data.user,
@@ -18,7 +18,8 @@ module.exports.addToCart = (data) => {
 			price: data.price,
 			subTotal: data.price * data.qty
 		})	
-		//return fals	
+
+
 		return newCart.save().then((cart,err) => {
 				if(err){
 				return false;
@@ -27,9 +28,29 @@ module.exports.addToCart = (data) => {
 			}
 		})
 
-	//})
+	})
 
-}
+	let isProductUpdated = await Product.findById(data.productId).then(product => {
+
+		product.quantity -= data.qty;
+
+		return product.save().then((product, err) => {
+			if(err) {
+				return false;
+			} else {
+				return true;
+			}
+		})
+
+	})
+
+	if(isCartUpdated && isProductUpdated) {
+		return true;
+	} else {
+		return false;
+	}
+ 
+};
 
 //RETRIEVE USER CART
 module.exports.myCart = (data) => {

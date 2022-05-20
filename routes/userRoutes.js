@@ -120,12 +120,9 @@ router.put('/set-user/:id', auth.verify, (req, res) => {
 router.post('/checkout', auth.verify, (req,res) => {
 	
 	const data = {
-		userId: auth.decode(req.headers.authorization).id,
-		productId: req.body.productId,
-		qty: req.body.qty,
-		price: req.body.price
-
-	}
+			userId: auth.decode(req.headers.authorization).id,
+			orders: req.body.orders
+		}
 
 	UserController.checkOut(data).then(result => res.send(result));
 });

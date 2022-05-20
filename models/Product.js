@@ -35,23 +35,23 @@ const productSchema = new mongoose.Schema({
 	createdOn: {
 		type: Date,
 		default: new Date()
-	},
-	customers: [
-		{
-			userId: {
-				type: String,
-				required: [true, 'User ID is required.']
-			},
-			qtyOrdered: {
-				type: Number,
-				required: [true, 'Quantity ordered is required']
-			},
-			orderedOn: {
-				type: Date,
-				default: new Date()
-			}
-		}
-	]
+	}
+	// customers: [
+	// 	{
+	// 		userId: {
+	// 			type: String,
+	// 			required: [true, 'User ID is required.']
+	// 		},
+	// 		qtyOrdered: {
+	// 			type: Number,
+	// 			required: [true, 'Quantity ordered is required']
+	// 		},
+	// 		orderedOn: {
+	// 			type: Date,
+	// 			default: new Date()
+	// 		}
+	// 	}
+	// ]
 
 	})
 
