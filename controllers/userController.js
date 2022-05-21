@@ -202,8 +202,8 @@ module.exports.checkOut = async (data) => {
 					elementB.isPaid = true;
 
 					return elementB.save().then((elementB,err)=>{
-						if(err){
-							return false;
+						if(elementB){
+							return true;
 						} else {
 							return true;
 						}
@@ -211,22 +211,12 @@ module.exports.checkOut = async (data) => {
 				})
 		})
 
-
-		// return cart.save().then((result,err) => {
-		// 		if(err){
-		// 		return false;
-		// 	} else {
-		// 		return true;
-		// 	}
-		// })
-
 	});
-	//-----------------------------------------------------
 
-	if(isUserUpdated === true && isCartUpdated === true){
-		return true
+	if(!isCartUpdated && !isUserUpdated){
+		return false
 	} else {
-		return false;
+		return true
 	}
 
 
