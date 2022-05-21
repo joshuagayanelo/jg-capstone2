@@ -44,4 +44,18 @@ router.put('/remove-item/:cartId', auth.verify, (req,res) => {
 	}
 });
 
+//VIEW CART ITEM
+router.get('/view-item/:cartId', auth.verify, (req, res) => {
+
+	const data = {
+		user: auth.decode(req.headers.authorization).id
+	}
+
+	if(data.user) {
+		CartController.viewItem(req.params.cartId, ).then(result => res.send(result));
+	} else {
+		res.send('Invalid token')
+	}
+})
+
 module.exports = router;

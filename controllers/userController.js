@@ -39,7 +39,7 @@ module.exports.registerUser = (reqBody) => {
 // LOGIN USER
 module.exports.loginUser = (reqBody) => {
 
-	return User.findOne({email: reqBody.email}).then(result => {
+	return User.findOne({ email: reqBody.email }).then(result => {
 		if(result == null) {
 			return {message:'Incorrect email or password'};
 		} else {
@@ -164,15 +164,17 @@ module.exports.checkOut = async (data) => {
 	let isUserUpdated = await User.findById(data.userId).then(user => {
 	
 		user.hasPurchased = true
-
+		//user.orders.isPaid = true
+		
 		data.orders.forEach(element => {
 			user.orders.push({
-				
-				cartId: element.cartId
-				
+				cartId: element.cartId,
+				isPaid: true
+				//onsole.log(element.cartId)
 			});
+			
 		});
-
+		
 		return user.save().then((user, err) => {
 			if(err) {
 				return false;
@@ -184,27 +186,50 @@ module.exports.checkOut = async (data) => {
 
 	});
 		
-	// DITO AKO NA STUCK---------------------------------
-	let isCartUpdated = await Cart.findById(data.orders.cartId).then(result => {
 
-		cart.isPaid = true
+	let isCartUpdated = await Cart.find({user: data.userId}).then(cart => {	
+		
+		//console.log({user: data.userId})
 
-		return cart.save().then((cart, err) => {
-			if(err) {
-				return false;
-			} else {
-				return true;
-			}
+		data.orders.forEach(element => {
+				cartId: element.cartId
+				//console.log(element.cartId)
+
+				Cart.findById(element.cartId).then(elementB => {
+					
+					//console.log(elementB);
+
+					elementB.isPaid = true;
+
+					return elementB.save().then((elementB,err)=>{
+						if(err){
+							return false;
+						} else {
+							return true;
+						}
+					})
+				})
 		})
 
-	})
+
+		// return cart.save().then((result,err) => {
+		// 		if(err){
+		// 		return false;
+		// 	} else {
+		// 		return true;
+		// 	}
+		// })
+
+	});
 	//-----------------------------------------------------
 
-	if(isUserUpdated && isCartUpdated){
-		return {message:'Purchase Successful.'}
+	if(isUserUpdated === true && isCartUpdated === true){
+		return true
 	} else {
 		return false;
 	}
+
+
 };
 
 
@@ -234,9 +259,6 @@ module.exports.checkOut = async (data) => {
 	// 	let isProductUpdated = await Product.findById(data.productId).then(product => {
 			
 	// 		product.quantity -= data.qty;
-
-	// 		//let subTotal = data.qty * data.price
-
 
 	// 		product.customers.push({
 	// 			userId: data.userId,

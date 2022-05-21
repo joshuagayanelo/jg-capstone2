@@ -48,6 +48,11 @@ const userSchema = new mongoose.Schema({
 				// 	type: Number,
 				// 	required: [false, 'Price is required.']
 				// },
+				isPaid:{
+					type: Boolean,
+					default: false
+
+				},
 				purchasedOn: {
 					type: Date,
 					default: new Date()

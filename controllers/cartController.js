@@ -54,7 +54,7 @@ module.exports.addToCart = async (data) => {
 
 //RETRIEVE USER CART
 module.exports.myCart = (data) => {
-return Cart.find({user:data.user}).then((result, err) => {
+return Cart.find({user:data.user, isPaid: false, isArchived: false}).then((result, err) => {
 		if(err) {
 			return false;
 		} else {
@@ -62,6 +62,7 @@ return Cart.find({user:data.user}).then((result, err) => {
 				{
 					orders:"Your cart",
 					result
+
 				}
 			]
 		}
@@ -80,9 +81,19 @@ module.exports.removeItem = (cartId, res) => {
 		} else {
 			// Course updated successfullu
 			return {
-				message: "Course successfully archived."
+				message: "Item successfully removed."
 			};
 		}
 	})
 };
 
+// VIEW CART TIEM
+module.exports.viewItem = (cartId, res) => {
+	return Cart.findById(cartId).then((result,err) => {
+		if(err){
+			return false;
+		} else {
+			return result;
+		}
+	})
+};
