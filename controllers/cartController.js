@@ -54,7 +54,7 @@ module.exports.addToCart = async (data) => {
 
 //RETRIEVE USER CART
 module.exports.myCart = (data) => {
-return Cart.find({user:data.user, isPaid: false, isArchived: false}).then((result, err) => {
+return Cart.find({data, isPaid: false, isArchived: false}).then((result, err) => {
 		if(err) {
 			return false;
 		} else {

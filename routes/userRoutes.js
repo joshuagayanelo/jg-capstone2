@@ -63,26 +63,18 @@ router.get('/orders', (req, res) => {
 });
 
 
-
-//GET USER BY ID
-router.get('/:id', (req, res) => {
-	
-	const data = {
-		isAdmin: auth.decode(req.headers.authorization).isAdmin
-	}
-
-	if(data.isAdmin){
-		UserController.getOneUser(req.params.id).then(result => res.send(result))
-	} else {
-		res.send('Invalid token.')
-	}
-
-});
-
-
 // LOGIN USER
 router.post('/login', (req ,res) => {
 	UserController.loginUser(req.body).then(result => res.send(result))
+});
+
+
+//GET USER DETAILS
+router.get('/details', auth.verify, (req, res) => {
+	
+	const data = auth.decode(req.headers.authorization)
+	
+	UserController.getUserDetails(data.id).then(result => res.send(result))
 });
 
 

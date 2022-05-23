@@ -25,12 +25,12 @@ module.exports.registerUser = (reqBody) => {
 					return false;
 				} else {
 					// User registration successful.
-					return {message:"User successfully registered."};
+					return true;
 				}
 			})
 
 		} else {
-			return {message: 'User already exists.'}	
+			return false	
 		}
 	})
 };
@@ -41,14 +41,14 @@ module.exports.loginUser = (reqBody) => {
 
 	return User.findOne({ email: reqBody.email }).then(result => {
 		if(result == null) {
-			return {message:'Incorrect email or password'};
+			return false;
 		} else {
 			const validatePassword = bcrypt.compareSync(reqBody.password, result.password)
 
 			if(validatePassword) {
-				return { token : auth.createAccessToken(result.toObject()) }
+				return { accessToken : auth.createAccessToken(result.toObject()) }
 			} else {
-				return {message:'Incorrect email or password'};
+				return false
 			}
 		}
 	})
@@ -96,14 +96,18 @@ module.exports.getOrders = (reqBody) => {
 };
 
 
-// GET USER BY ID
-module.exports.getOneUser = (reqParams) => {
-	return User.findById(reqParams).then((result, err) => {
-		if(err) {
-			return false;
-		} else {
-			return result
-		}
+// GET USER DETAILS
+module.exports.getUserDetails = (data) => {
+	return User.findById(data).then((result, err) => {
+		result.password = "";
+
+		return result;
+		
+		// if(err) {
+		// 	return false;
+		// } else {
+		// 	return result
+		// }
 	})
 }
 

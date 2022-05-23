@@ -21,12 +21,10 @@ router.post('/add-to-cart', auth.verify, (req,res) => {
 // RETRIEVE USER CART
 router.get('/my-cart', auth.verify, (req,res) => {
 
-		const data = {
-			userId: auth.decode(req.headers.authorization).id,
-			user: req.body.user
-		} 
-
-	CartController.myCart(data).then(result => res.send(result));
+		const data = 
+			auth.decode(req.headers.authorization);
+			
+	CartController.myCart(data.id).then(result => res.send(result));
 });
 
 
