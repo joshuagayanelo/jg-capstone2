@@ -10,6 +10,9 @@ router.post('/add-to-cart', auth.verify, (req,res) => {
 	const data = {
 		user: auth.decode(req.headers.authorization).id,
 		productId: req.body.productId,
+		productName: req.body.productName,
+		productSku: req.body.productSku,
+		description: req.body.description,
 		qty: req.body.qty,
 		price: req.body.price,
 		subTotal: req.body.subTotal
@@ -56,4 +59,4 @@ router.get('/view-item/:cartId', auth.verify, (req, res) => {
 	}
 })
 
-module.exports = router;
+module.exports = router;									

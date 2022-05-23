@@ -10,6 +10,18 @@ const cartSchema = new mongoose.Schema({
 		type: String,
 		required: [true, 'Product ID is required.']
 	},
+	productName: {
+		type: String,
+		required: [true, 'Product name is required.']
+	},
+	productSku: {
+		type: String,
+		required: [true, 'Product SKU is required.']
+	},
+	description: {
+		type: String,
+		required: [true, 'Description is required.']
+	},
 	qty: {
 		type: Number,
 		required: [true, 'Order quantity is required.']

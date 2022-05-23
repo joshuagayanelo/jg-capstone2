@@ -31,10 +31,23 @@ router.put('/update/:id', auth.verify, (req, res) => {
 	}
 });
 
+// GET ALL PRODUCTS/INVENTORY
+router.get('/inventory', auth.verify, (req, res) => {
+	const data = {
+		isAdmin: auth.decode(req.headers.authorization).isAdmin
+	}
 
-// GET ALL PRODUCTS
+	if(data.isAdmin){
+		ProductController.getInventory(req.body).then(result => res.send(result));
+	} else {
+		res.send('Invalid token.')
+	}
+});
+
+
+// GET ACTIVE PRODUCTS
 router.get('/', (req, res) => {
-	ProductController.getAllProducts(req.body).then(result => res.send(result))
+	ProductController.getProducts(req.body).then(result => res.send(result))
 });
 
 
@@ -69,7 +82,6 @@ router.put('/activate/:id', auth.verify, (req, res) => {
 		res.send('Invalid token.')
 	}
 });
-
 
 
 

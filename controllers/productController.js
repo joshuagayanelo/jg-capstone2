@@ -24,7 +24,7 @@ module.exports.newProduct = (reqBody) => {
 					return false;
 				} else {
 					// Product creation successful.
-					return {message:'Your product has been sucecssfully created.'};
+					return true
 				}
 			})
 
@@ -59,9 +59,20 @@ module.exports.updateProduct = (id, reqBody) => {
 	})
 };
 
+// GET ALL PRODUCTS/INVENTORY
+module.exports.getInventory = (reqBody) => {
+	return Product.find().then((result, err) => {
+		if(err) {
+			return false;
+		} else {
+			return result;
+		}
+	})
+}
 
-// GET ALL PRODUCTS
-module.exports.getAllProducts = (reqBody) => {
+
+// GET ACTIVE PRODUCTS
+module.exports.getProducts = (reqBody) => {
 	return Product.find({ isActive: true }).then((result, err) => {
 		if(err) {
 			return false;
@@ -115,3 +126,4 @@ module.exports.activateProduct = (id, res) => {
 		}
 	})
 };
+

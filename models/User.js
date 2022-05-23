@@ -36,6 +36,18 @@ const userSchema = new mongoose.Schema({
 					type: String,
 					required: [true, 'Cart ID is required.']
 				},
+				productName: {
+					type: String,
+					required: [true, 'Product ID is required.']
+				},
+				productSku: {
+					type: String,
+					required: [true, 'Product SKU is required.']
+				},
+				description: {
+					type: String,
+					required: [true, 'Description is required.']
+				},
 				isPaid:{
 					type: Boolean,
 					default: false

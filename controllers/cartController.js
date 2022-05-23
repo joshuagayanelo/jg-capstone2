@@ -14,6 +14,9 @@ module.exports.addToCart = async (data) => {
 		let newCart = new Cart ({
 			user: data.user,
 			productId: data.productId,
+			productName: data.productName,
+			productSku: data.productSku,
+			description: data.description,
 			qty:data.qty,
 			price: data.price,
 			subTotal: data.price * data.qty
@@ -38,7 +41,7 @@ module.exports.addToCart = async (data) => {
 			if(err) {
 				return false;
 			} else {
-				return true;
+				return true;		
 			}
 		})
 
@@ -54,17 +57,11 @@ module.exports.addToCart = async (data) => {
 
 //RETRIEVE USER CART
 module.exports.myCart = (data) => {
-return Cart.find({data, isPaid: false, isArchived: false}).then((result, err) => {
+return Cart.find({user:data.user, isPaid: false, isArchived: false}).then((result, err) => {
 		if(err) {
 			return false;
 		} else {
-			return [
-				{
-					orders:"Your cart",
-					result
-
-				}
-			]
+			return result
 		}
 	})
 }
@@ -87,7 +84,7 @@ module.exports.removeItem = (cartId, res) => {
 	})
 };
 
-// VIEW CART TIEM
+// VIEW CART ITEM
 module.exports.viewItem = (cartId, res) => {
 	return Cart.findById(cartId).then((result,err) => {
 		if(err){

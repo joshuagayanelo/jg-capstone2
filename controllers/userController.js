@@ -173,6 +173,9 @@ module.exports.checkOut = async (data) => {
 		data.orders.forEach(element => {
 			user.orders.push({
 				cartId: element.cartId,
+				productName: element.productName,
+				productSku: element.productSku,
+				description: element.description,
 				isPaid: true
 				//onsole.log(element.cartId)
 			});
@@ -186,7 +189,6 @@ module.exports.checkOut = async (data) => {
 				return true;
 			}
 		})
-
 
 	});
 		
@@ -216,6 +218,9 @@ module.exports.checkOut = async (data) => {
 		})
 
 	});
+
+
+	//let isTransactionsUpdated = awit 
 
 	if(!isCartUpdated && !isUserUpdated){
 		return false
