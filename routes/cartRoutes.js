@@ -53,7 +53,7 @@ router.get('/view-item/:cartId', auth.verify, (req, res) => {
 	}
 
 	if(data.user) {
-		CartController.viewItem(req.params.cartId, ).then(result => res.send(result));
+		CartController.viewItem(req.params.cartId).then(result => res.send(result));
 	} else {
 		res.send('Invalid token')
 	}
