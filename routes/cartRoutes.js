@@ -21,15 +21,6 @@ router.post('/add-to-cart', auth.verify, (req,res) => {
 	CartController.addToCart(data).then(result => res.send(result));
 });
 
-// RETRIEVE USER CART
-router.get('/my-cart', auth.verify, (req,res) => {
-
-		const data = 
-			auth.decode(req.headers.authorization);
-			
-	CartController.myCart(data.id).then(result => res.send(result));
-});
-
 
 //DELETE CART ITEM
 router.put('/remove-item/:cartId', auth.verify, (req,res) => {
@@ -58,5 +49,14 @@ router.get('/view-item/:cartId', auth.verify, (req, res) => {
 		res.send('Invalid token')
 	}
 })
+
+// RETRIEVE USER CART
+router.get('/my-cart', auth.verify, (req,res) => {
+
+		const data = auth.decode(req.headers.authorization)
+			
+			
+	CartController.myCart(data.id).then(result => res.send(result));
+});
 
 module.exports = router;									

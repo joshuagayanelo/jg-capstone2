@@ -55,16 +55,7 @@ module.exports.addToCart = async (data) => {
  
 };
 
-//RETRIEVE USER CART
-module.exports.myCart = (data) => {
-return Cart.find({data, isPaid: false, isArchived: false}).then((result, err) => {
-		if(err) {
-			return false;
-		} else {
-			return result
-		}
-	})
-}
+
 
 // REMOVE ITEM
 module.exports.removeItem = (cartId, res) => {
@@ -94,3 +85,20 @@ module.exports.viewItem = (cartId, res) => {
 		}
 	})
 };
+
+
+//RETRIEVE USER CART
+module.exports.myCart = (data) => {
+	console.log(data)
+return Cart.find({user: data, isPaid: false, isArchived: false }).then((result, err) => {
+		if(err) {
+			return false;
+		} else {
+			return result
+		}
+	})
+	
+
+}
+
+// isPaid: false, isArchived: false
