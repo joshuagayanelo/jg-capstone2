@@ -68,9 +68,10 @@ module.exports.removeItem = (cartId, res) => {
 			return false;
 		} else {
 			// Course updated successfullu
-			return {
-				message: "Item successfully removed."
-			};
+			return true
+			// {
+			// 	message: "Item successfully removed."
+			// };
 		}
 	})
 };
