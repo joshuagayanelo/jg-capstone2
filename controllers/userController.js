@@ -121,7 +121,8 @@ module.exports.setAdmin = (id, res) => {
 
 	return User.findByIdAndUpdate(id, newStatus).then((result, err) => {
 		if(result) {
-			return {message: "User successfully assigned as Admin."}
+			return true
+			// return {message: "User successfully assigned as Admin."}
 		} else {
 			return false;
 		}
@@ -138,7 +139,8 @@ module.exports.setUser = (id, res) => {
 
 	return User.findByIdAndUpdate(id, newStatus).then((result, err) => {
 		if(result) {
-			return {message: "User successfully assigned as User."}
+			return true
+			// return {message: "User successfully assigned as User."}
 		} else {
 			return false;
 		}
@@ -151,12 +153,13 @@ module.exports.myOrders = (reqParams) => {
 		if(err) {
 			return false;
 		} else {
-			return [
-				{
-					orders:"Your orders",
-					result
-				}
-			]
+			return result
+			// [
+			// 	{
+			// 		orders:"Your orders",
+			// 		result
+			// 	}
+			// ]
 		}
 	})
 }

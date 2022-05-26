@@ -54,7 +54,8 @@ module.exports.updateProduct = (id, reqBody) => {
 			return false;
 		} else {
 			// Course updated successfullu
-			return {message: 'Your product has been updated.'};
+			// return {message: 'Your product has been updated.'};
+			return true;
 		}
 	})
 };
@@ -88,7 +89,8 @@ module.exports.getOneProduct = (reqParams) => {
 		if(result.isActive === true) {
 			return result;
 		} else {
-			return {message: 'This product is currently not available.'};
+			return false;
+			// return {message: 'This product is currently not available.'};
 		}
 	})
 }
@@ -105,7 +107,8 @@ module.exports.archiveProduct = (id, res) => {
 		if(err) {
 			return false;
 		} else {
-			return {message: 'Product has been succesfully archived.'};
+			return true;
+			//return {message: 'Product has been succesfully archived.'};
 		}
 	})
 };
@@ -122,7 +125,8 @@ module.exports.activateProduct = (id, res) => {
 		if(err) {	
 			return false;
 		} else {
-			return {message: 'Product is now active.'};
+			return true;
+			// return {message: 'Product is now active.'};
 		}
 	})
 };
