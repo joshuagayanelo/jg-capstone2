@@ -48,6 +48,18 @@ const userSchema = new mongoose.Schema({
 					type: String,
 					required: [true, 'Description is required.']
 				},
+				qty:{
+					type: Number,
+					required: [true, 'Quantity is required.']
+				},
+				price:{
+					type: Number,
+					required: [true, 'Price is required.']
+				},
+				subTotal:{
+					type: Number,
+					required:[true, 'Sub-total is required.']
+				},
 				isPaid:{
 					type: Boolean,
 					default: false

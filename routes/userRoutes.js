@@ -113,10 +113,11 @@ router.post('/checkout', auth.verify, (req,res) => {
 	
 	const data = {
 			userId: auth.decode(req.headers.authorization).id,
+			totalAmount:req.body.totalAmount,
 			orders: req.body.orders
 		}
 
-	UserController.checkOut(data).then(result => res.send(result));
+	UserController.checkOut(data, req.body).then(result => res.send(result));
 });
 
 module.exports = router;

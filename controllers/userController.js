@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const Cart = require ('../models/Cart');
 const Product = require('../models/Product')
+const Transaction = require('../models/Transaction')
 const bcrypt = require('bcrypt'); /*Password encryption*/
 const auth = require('../auth');
 
@@ -179,11 +180,14 @@ module.exports.checkOut = async (data) => {
 				productName: element.productName,
 				productSku: element.productSku,
 				description: element.description,
+				qty:element.qty,
+				price:element.price,
+				subTotal:element.subTotal,
 				isPaid: true
-				//onsole.log(element.cartId)
 			});
 			
 		});
+		//console.log(data.orders)
 		
 		return user.save().then((user, err) => {
 			if(err) {
@@ -198,7 +202,7 @@ module.exports.checkOut = async (data) => {
 
 	let isCartUpdated = await Cart.find({user: data.userId}).then(cart => {	
 		
-		//console.log({user: data.userId})
+		// onsole.log({user: data.userId})
 
 		data.orders.forEach(element => {
 				cartId: element.cartId
@@ -223,16 +227,85 @@ module.exports.checkOut = async (data) => {
 	});
 
 
-	//let isTransactionsUpdated = awit 
+	let isTransactionUpdated = await Transaction.findById(data.userId).then(result => {
 
-	if(!isCartUpdated && !isUserUpdated){
-		return false
+		
+		const orders = []
+		data.orders.forEach(element => {
+				orders.push(element)
+		})
+
+		//console.log(orders)
+
+		if(result === null){
+			
+			let newTransaction = new Transaction ({
+				user: data.userId, 
+				totalAmount: data.totalAmount,
+				orders: orders
+			})
+
+			//console.log(newTransaction)
+
+			return newTransaction.save().then((result, err) => {
+				if(err){
+					return false;
+				} else {
+					return true;
+				}
+			})
+		};
+
+	});
+
+	if(isCartUpdated && isUserUpdated && isTransactionPosted && isTransactionUpdated){
+		return true
 	} else {
 		return true
 	}
 
 
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
