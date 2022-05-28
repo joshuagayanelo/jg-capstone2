@@ -89,9 +89,10 @@ module.exports.getOrders = (reqBody) => {
 		if(err) {
 			return false;
 		} else {
-			return {
-				orders: result
-			}
+			return result			
+			// {
+			// 	orders: result
+			// }
 		}
 	})
 };
