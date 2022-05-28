@@ -81,7 +81,7 @@ module.exports.getAdmin = (reqBody) => {
 	})
 };
 
-// RETRIEVE ORDERS
+// GET ALL ORDERS [ADMIN]
 module.exports.getOrders = (reqBody) => {
 	
 	return User.find({ isAdmin: false, hasPurchased: true }).then((result, err) => {
@@ -164,6 +164,7 @@ module.exports.myOrders = (reqParams) => {
 		}
 	})
 }
+
 
 
 // CHECKOUT v2
@@ -268,93 +269,22 @@ module.exports.checkOut = async (data) => {
 };
 
 
+//GET USER TRANSACTIONS
+module.exports.myTransactions = (data) => {
+	return Transaction.findOne({user: data}).then((result, err) => {
+		//console.log(result);
+		if(err) {
+			return false;
+		} else {
+			return result
+			// [
+			// 	{
+			// 		orders:"Your orders",
+			// 		result
+			// 	}
+			// ]
+		}
+	})
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	// // CHECKOUT v1
-	// module.exports.checkOut = async (data) => {
-
-	// 	let isUserUpdated = await User.findById(data.userId).then(user => {
-		
-	// 		user.hasPurchased = true;
-
-	// 		user.orders.push({
-	// 			productId: data.productId,
-	// 			qty:data.qty,
-	// 			price: data.price * data.qty
-	// 		});
-
-	// 		return user.save().then((user, err) => {
-	// 			if(err) {
-	// 				return false;
-	// 			} else {
-	// 				return true;
-	// 			}
-	// 		})
-	// 	});
-
-	// 	let isProductUpdated = await Product.findById(data.productId).then(product => {
-			
-	// 		product.quantity -= data.qty;
-
-	// 		product.customers.push({
-	// 			userId: data.userId,
-	// 			qtyOrdered: data.qty,
-	// 			price: data.price 
-	// 		});
-
-	// 		return product.save().then((product, err) => {
-	// 			if(err) {
-	// 				return false;
-	// 			} else {
-	// 				return true;
-	// 			}
-	// 		})
-
-
-	// 	});
-
-	// 		if(isUserUpdated && isProductUpdated){
-	// 			return {message:'You product has been added.'}
-	// 		} else {
-	// 			return false;
-	// 		}
-	// };

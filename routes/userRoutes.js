@@ -48,7 +48,7 @@ router.get('/my-orders', auth.verify, (req,res) => {
 	UserController.myOrders(data.id).then(result => res.send(result));
 });
 
-// RETRIEVE ALL ORDERS
+// GET ALL ORDERS [ADMIN]
 router.get('/orders', (req, res) => {
 
 	const data = {
@@ -118,6 +118,15 @@ router.post('/checkout', auth.verify, (req,res) => {
 		}
 
 	UserController.checkOut(data, req.body).then(result => res.send(result));
+});
+
+
+// GET USER TRANSACTIONS
+router.get('/transactions', auth.verify, (req,res) => {
+	
+	const data = auth.decode(req.headers.authorization);
+
+	UserController.myTransactions(data.id).then(result => res.send(result));
 });
 
 module.exports = router;
